@@ -17,24 +17,28 @@ app.get('/buzzwords', (req, res) => {
 });
 
 app.post('/buzzword', (req, res) => {
-  let pointNum = parseFloat(req.body.points);
+  let pointNum = parseFloat(req.body.points); //turns points value into a number
+
+  //creates new buzzword if validation returns true
   if (validate()) {
     req.body.points = pointNum;
     buzzWords.push(req.body);
     res.json({
       'success': true
     })
+  //fails if validation returns false
   } else {
     res.json({
       'success': false
     })
   }
 
+  //validation function
   function validate() {
-    if (!req.body.buzzword || !req.body.points) {
+    if (!req.body.buzzword || !req.body.points) { //checks for buzzwords and points value in request
       return false
     } else {
-      if (Number.isNaN(pointNum)) {
+      if (Number.isNaN(pointNum)) { //checks if points has a number value
         return false;
       }
     }
