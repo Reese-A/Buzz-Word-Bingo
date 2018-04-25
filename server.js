@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const PORT = process.env.PORT || 8080;
 let buzzWords = [];
 
+
 app.use(express.static('./public'));
 
 app.use(bodyParser.urlencoded({
@@ -37,7 +38,7 @@ app.post('/buzzword', (req, res) => {
     if (!req.body.buzzword) { //checks for buzzword value in request
       return false
     } else {
-      if (!req.body.points) {//checks for points value in request
+      if (!req.body.points) { //checks for points value in request
         return false
       } else {
         if (Number.isNaN(pointNum)) { //checks if points has a number value
@@ -53,18 +54,26 @@ app.put('/buzzword', (req, res) => {
 
 });
 
-app.delete('/buzzword', (req,res)=>{
-  let wordArr = buzzWords.map(function(object){
+app.delete('/buzzword', (req, res) => {
+  if (checkBuzzwords(req, res) !== -1) {
+    buzzWords.splice(wordIndex, 1);
+    res.json({
+      'success': true
+    });
+  } else {
+    res.json({
+      'success': false
+    })
+  }
+})
+
+//checks for a buzzword that matches request and returns its index position in the buzzwords array
+function checkBuzzwords(req, res){
+  let wordArr = buzzWords.map(function (object) {
     return object.buzzword;
   })
-  let wordIndex = wordArr.indexOf(req.body.buzzword);
-if(wordIndex !== -1){
-  buzzWords.splice(wordIndex, 1);
-  res.json({'success': true});
-}else{
-  res.json({'success': false})
+  return wordIndex = wordArr.indexOf(req.body.buzzword);
 }
-})
 
 app.listen(PORT, (err) => {
   process.stdout.write(`Server listening on port: ${PORT}\r\n`);
