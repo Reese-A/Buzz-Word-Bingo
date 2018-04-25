@@ -26,8 +26,7 @@ app.post('/buzzword', (req, res) => {
     res.json({
       'success': true
     })
-  //fails if validation returns false
-  } else {
+  } else { //fails if validation returns false
     res.json({
       'success': false
     })
@@ -35,18 +34,37 @@ app.post('/buzzword', (req, res) => {
 
   //validation function
   function validate() {
-    if (!req.body.buzzword || !req.body.points) { //checks for buzzwords and points value in request
+    if (!req.body.buzzword) { //checks for buzzword value in request
       return false
     } else {
-      if (Number.isNaN(pointNum)) { //checks if points has a number value
-        return false;
+      if (!req.body.points) {//checks for points value in request
+        return false
+      } else {
+        if (Number.isNaN(pointNum)) { //checks if points has a number value
+          return false;
+        }
       }
     }
     return true;
   }
+});
+
+app.put('/buzzword', (req, res) => {
 
 });
 
+app.delete('/buzzword', (req,res)=>{
+  let wordArr = buzzWords.map(function(object){
+    return object.buzzword;
+  })
+  let wordIndex = wordArr.indexOf(req.body.buzzword);
+if(wordIndex !== -1){
+  buzzWords.splice(wordIndex, 1);
+  res.json({'success': true});
+}else{
+  res.json({'success': false})
+}
+})
 
 app.listen(PORT, (err) => {
   process.stdout.write(`Server listening on port: ${PORT}\r\n`);
