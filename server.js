@@ -12,6 +12,7 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.get('/buzzwords', (req, res) => {
+  //returns list of buzzwords and respective points values in buzzwords array
   res.json({
     'buzzWords': buzzWords
   });
