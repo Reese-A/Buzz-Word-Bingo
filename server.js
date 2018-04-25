@@ -18,18 +18,17 @@ app.get('/buzzwords', (req, res) => {
 
 app.post('/buzzword', (req, res) => {
   let pointNum = parseFloat(req.body.points);
-  if (validate() === false) {
-    res.json({
-      'success': false
-    })
-  } else {
+  if (validate()) {
     req.body.points = pointNum;
     buzzWords.push(req.body);
     res.json({
       'success': true
     })
+  } else {
+    res.json({
+      'success': false
+    })
   }
-
 
   function validate() {
     if (!req.body.buzzword || !req.body.points) {
@@ -39,6 +38,7 @@ app.post('/buzzword', (req, res) => {
         return false;
       }
     }
+    return true;
   }
 
 });
