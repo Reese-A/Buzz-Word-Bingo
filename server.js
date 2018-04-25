@@ -50,11 +50,22 @@ app.post('/buzzword', (req, res) => {
   }
 });
 
-app.post('/reset', (req,res)=>{
+app.post('/reset', (req, res) => {
   buzzWords = [];
   points = 0;
-  res.send({'success': true});
+  res.send({
+    'success': true
+  });
 })
+
+app.post('/heard', (req, res) => {
+  if (checkBuzzwords(req, res) !== -1){
+    points += buzzWords[checkBuzzwords(req, res)].points;
+    res.send({'totalScore': points});
+  }else{
+    return false;
+  }
+});
 
 app.put('/buzzword', (req, res) => {
   //checks for a buzzword in buzzwords array and updates points if found
