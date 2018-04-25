@@ -11,19 +11,38 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.get('/buzzwords', (req, res) => {
-  res.json({'buzzWords': buzzWords});
+  res.json({
+    'buzzWords': buzzWords
+  });
 });
 
-app.post('/buzzword', (req, res)=>{
-  console.log(req.body.points)
+app.post('/buzzword', (req, res) => {
   let pointNum = parseFloat(req.body.points);
-  if (typeof(pointNum) !== 'number'){
-    res.send({'success': false})
-  };
-  req.body.points = pointNum;
-  buzzWords.push(req.body);
-  res.send({'success': true})
-})
+  if (validate() === false) {
+    res.json({
+      'success': false
+    })
+  } else {
+    req.body.points = pointNum;
+    buzzWords.push(req.body);
+    res.json({
+      'success': true
+    })
+  }
+
+
+  function validate() {
+    if (!req.body.buzzword || !req.body.points) {
+      return false
+    } else {
+      if (Number.isNaN(pointNum)) {
+        return false;
+      }
+    }
+  }
+
+});
+
 
 app.listen(PORT, (err) => {
   process.stdout.write(`Server listening on port: ${PORT}\r\n`);
