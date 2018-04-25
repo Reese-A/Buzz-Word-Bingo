@@ -50,14 +50,25 @@ app.post('/buzzword', (req, res) => {
   }
 });
 
-app.put('/buzzword', (req, res) => {
-let newPoints = parseFloat(req.body.points)
-if(checkBuzzwords(req,res) !== -1){
-  buzzWords[checkBuzzwords(req, res)].points = newPoints;
+app.post('/reset', (req,res)=>{
+  buzzWords = [];
+  points = 0;
   res.send({'success': true});
-}else{
-  res.send({'success': false});
-}
+})
+
+app.put('/buzzword', (req, res) => {
+  //checks for a buzzword in buzzwords array and updates points if found
+  let newPoints = parseFloat(req.body.points)
+  if (checkBuzzwords(req, res) !== -1) {
+    buzzWords[checkBuzzwords(req, res)].points = newPoints;
+    res.send({
+      'success': true
+    });
+  } else {
+    res.send({
+      'success': false
+    });
+  }
 });
 
 app.delete('/buzzword', (req, res) => {
@@ -75,7 +86,7 @@ app.delete('/buzzword', (req, res) => {
 })
 
 //checks for a buzzword that matches request and returns its index position in the buzzwords array
-function checkBuzzwords(req, res){
+function checkBuzzwords(req, res) {
   let wordArr = buzzWords.map(function (object) {
     return object.buzzword;
   })
