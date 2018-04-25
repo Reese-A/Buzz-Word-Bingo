@@ -36,17 +36,9 @@ app.post('/buzzword', (req, res) => {
 
   //validation function
   function validate() {
-    if (!req.body.buzzword) { //checks for buzzword value in request
-      return false
-    } else {
-      if (!req.body.points) { //checks for points value in request
-        return false
-      } else {
-        if (Number.isNaN(pointNum)) { //checks if points has a number value
-          return false;
-        }
-      }
-    }
+    if (!req.body.buzzword) return false; //checks for buzzword value in request
+    if (!req.body.points) return false; //checks for points value in request
+    if (Number.isNaN(pointNum)) return false; //checks if points has a number value
     return true;
   }
 });
@@ -62,10 +54,12 @@ app.post('/reset', (req, res) => {
 
 app.post('/heard', (req, res) => {
   //checks for a buzzword in buzzwords array and adds its points value to total points
-  if (checkBuzzwords(req, res) !== -1){
+  if (checkBuzzwords(req, res) !== -1) {
     points += buzzWords[checkBuzzwords(req, res)].points;
-    res.send({'totalScore': points});
-  }else{
+    res.send({
+      'totalScore': points
+    });
+  } else {
     return false;
   }
 });
