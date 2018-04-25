@@ -3,7 +3,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const PORT = process.env.PORT || 8080;
 let buzzWords = [];
-
+let score = 0;
 
 app.use(express.static('./public'));
 
@@ -51,10 +51,17 @@ app.post('/buzzword', (req, res) => {
 });
 
 app.put('/buzzword', (req, res) => {
-
+let newPoints = parseFloat(req.body.points)
+if(checkBuzzwords(req,res) !== -1){
+  buzzWords[checkBuzzwords(req, res)].points = newPoints;
+  res.send({'success': true});
+}else{
+  res.send({'success': false});
+}
 });
 
 app.delete('/buzzword', (req, res) => {
+  //checks for a buzzword in buzzwords array and removes it if found
   if (checkBuzzwords(req, res) !== -1) {
     buzzWords.splice(wordIndex, 1);
     res.json({
