@@ -51,6 +51,7 @@ app.post('/buzzword', (req, res) => {
 });
 
 app.post('/reset', (req, res) => {
+  //removes all buzzwords and resets points
   buzzWords = [];
   points = 0;
   res.send({
@@ -59,6 +60,7 @@ app.post('/reset', (req, res) => {
 })
 
 app.post('/heard', (req, res) => {
+  //checks for a buzzword in buzzwords array and adds its points value to total points
   if (checkBuzzwords(req, res) !== -1){
     points += buzzWords[checkBuzzwords(req, res)].points;
     res.send({'totalScore': points});
@@ -68,7 +70,7 @@ app.post('/heard', (req, res) => {
 });
 
 app.put('/buzzword', (req, res) => {
-  //checks for a buzzword in buzzwords array and updates points if found
+  //checks for a buzzword in buzzwords array and updates buzzwords points value if found
   let newPoints = parseFloat(req.body.points)
   if (checkBuzzwords(req, res) !== -1) {
     buzzWords[checkBuzzwords(req, res)].points = newPoints;
